@@ -1,70 +1,14 @@
-import { useState, useEffect } from 'react';
-import { api } from './services/api';
+import { useState } from 'react';
 import Dashboard from './components/Dashboard';
 import Pets from './components/Pets';
 import Owners from './components/Owners';
 import Appointments from './components/Appointments';
 import Inventory from './components/Inventory';
-import Login from './components/Login';
 import { Stethoscope } from 'lucide-react';
 import './App.css';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [user, setUser] = useState(() => api.getUser());
-  const [loading, setLoading] = useState(true);
-  const [authError, setAuthError] = useState('');
-
-  useEffect(() => {
-    const autoLogin = async () => {
-      try {
-        if (api.getToken()) {
-          setUser(api.getUser());
-          return;
-        }
-
-        // Intentar iniciar sesión automáticamente con credenciales de administrador por defecto
-        const data = await api.login('admin@vet.com', 'Admin123*');
-        setUser(data.user);
-      } catch (err) {
-        console.error('Error en el auto-login:', err);
-        setAuthError(`Error de autenticación automática con la API: ${err.message || err}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    autoLogin();
-  }, []);
-
-  const handleLoginSuccess = (loggedUser) => {
-    setUser(loggedUser);
-    setAuthError('');
-  };
-
-  if (loading) {
-    return (
-      <div className="app-loading">
-        <div className="spinner"></div>
-        <p style={{ marginTop: '12px', color: 'var(--text-secondary)' }}>
-          Conectando automáticamente con la API...
-        </p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div>
-        {authError ? (
-          <div style={{ textAlign: 'center', padding: '24px 24px 0' }}>
-            <h2 style={{ color: '#ef4444' }}>Error de Conexión</h2>
-            <p>{authError}</p>
-          </div>
-        ) : null}
-        <Login onLoginSuccess={handleLoginSuccess} externalError={authError} />
-      </div>
-    );
-  }
 
   const renderActiveView = () => {
     switch (activeTab) {
