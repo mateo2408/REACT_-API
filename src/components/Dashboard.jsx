@@ -18,7 +18,7 @@ export default function Dashboard() {
         const summary = await api.getDashboardSummary();
         setData(summary);
       } catch (err) {
-        setError('Error al cargar la información del panel de control.');
+        setError(err.message || 'Error al cargar la información del panel de control.');
       } finally {
         setLoading(false);
       }
