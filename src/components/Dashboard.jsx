@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import { 
   Users, PawPrint, Calendar, ClipboardList, 
   ShieldAlert, Activity, Package, AlertTriangle, 
-  CheckCircle, ChevronRight, TrendingUp, Info
+  CheckCircle, Info
 } from 'lucide-react';
 import './Dashboard.css';
 
@@ -121,7 +121,9 @@ export default function Dashboard() {
         <div className="alerts-content">
           <div className="epidemic-status">
             <p className="summary-text">
-              <strong>Estado Actual:</strong> {epidemicSummary || 'Cargando análisis...'}
+              <strong>Estado Actual:</strong> {typeof epidemicSummary === 'object' && epidemicSummary !== null ? (
+                `Se registran ${epidemicSummary.totalCasesRecorded || 0} casos en total de ${epidemicSummary.totalDiseases || 0} enfermedades analizadas. Hay ${epidemicSummary.activeOutbreaks || 0} brotes activos.`
+              ) : (epidemicSummary || 'Cargando análisis...')}
             </p>
             
             {activeAlerts.length > 0 ? (
@@ -181,7 +183,19 @@ export default function Dashboard() {
                   {recommendations.map((rec, idx) => (
                     <div key={idx} className="rec-item">
                       <Info size={16} className="text-secondary" />
-                      <p>{rec}</p>
+                      <p>
+                        {typeof rec === 'object' && rec !== null ? (
+                          <>
+                            <span 
+                              className={`badge ${rec.priority === 'URGENT' ? 'badge-danger' : 'badge-warning'}`} 
+                              style={{ marginRight: '8px', display: 'inline-block' }}
+                            >
+                              {rec.priority}
+                            </span>
+                            {rec.action}
+                          </>
+                        ) : rec}
+                      </p>
                     </div>
                   ))}
                 </div>

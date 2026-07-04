@@ -26,8 +26,8 @@ export default function Inventory() {
   const filteredItems = items.filter((item) => {
     const query = searchQuery.toLowerCase();
     return (
-      item.name?.toLowerCase().includes(query) ||
-      item.type?.toLowerCase().includes(query)
+      item.medication?.toLowerCase().includes(query) ||
+      item.stockStatus?.toLowerCase().includes(query)
     );
   });
 
@@ -69,7 +69,7 @@ export default function Inventory() {
       <div className="cards-grid">
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => {
-            const isLowStock = item.stock <= item.minStock;
+            const isLowStock = item.stock <= item.minStock || item.needsRestock;
             return (
               <div key={item._id} className={`detail-card glass ${isLowStock ? 'alert-border' : ''}`}>
                 <div className="card-top">
@@ -77,8 +77,10 @@ export default function Inventory() {
                     <Package size={24} className="avatar-icon" />
                   </div>
                   <div>
-                    <h3>{item.name}</h3>
-                    <span className="badge badge-info">{item.type}</span>
+                    <h3>{item.medication}</h3>
+                    <span className={`badge ${item.stockStatus === 'out' ? 'badge-danger' : (isLowStock ? 'badge-warning' : 'badge-success')}`}>
+                      {item.stockStatus === 'out' ? 'Sin Stock' : (isLowStock ? 'Stock Bajo' : 'Óptimo')}
+                    </span>
                   </div>
                 </div>
                 

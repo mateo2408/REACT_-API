@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { Search, PawPrint, Calendar, Phone, FileText, AlertTriangle } from 'lucide-react';
+import { Search, PawPrint, Phone, FileText, AlertTriangle } from 'lucide-react';
 import './ListCommon.css';
 
 export default function Pets() {

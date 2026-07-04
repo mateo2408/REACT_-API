@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { Search, Calendar, User, Clock, Stethoscope, AlertTriangle, MessageSquare } from 'lucide-react';
+import { Search, Calendar, Clock, Stethoscope, AlertTriangle, MessageSquare } from 'lucide-react';
 import './ListCommon.css';
 
 export default function Appointments() {
