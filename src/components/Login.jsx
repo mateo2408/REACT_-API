@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { Mail, Lock, Stethoscope, AlertCircle } from 'lucide-react';
 import './Login.css';
 
-export default function Login({ onLoginSuccess }) {
+export default function Login({ onLoginSuccess, externalError = '' }) {
   const [email, setEmail] = useState('admin@vet.com');
   const [password, setPassword] = useState('Admin123*');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (externalError) {
+      setError(externalError);
+    }
+  }, [externalError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
