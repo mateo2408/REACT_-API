@@ -1,3 +1,5 @@
+// Componente principal de la aplicación
+// Maneja la autenticación, navegación entre secciones y estado global del usuario
 import { useState, useEffect } from 'react';
 import { api } from './services/api';
 import Dashboard from './components/Dashboard';
@@ -9,12 +11,15 @@ import Login from './components/Login';
 import { Stethoscope } from 'lucide-react';
 import './App.css';
 
+// Componente App: Renderiza el shell de la aplicación con menú de navegación
+// Gestiona la autenticación automática y cambio de vistas
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [user, setUser] = useState(() => api.getUser());
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState('');
 
+  // Al cargar la aplicación, intenta restaurar la sesión o hacer auto-login
   useEffect(() => {
     const autoLogin = async () => {
       try {
@@ -36,6 +41,7 @@ export default function App() {
     autoLogin();
   }, []);
 
+  // Callback ejecutado cuando el usuario inicia sesión exitosamente
   const handleLoginSuccess = (loggedUser) => {
     setUser(loggedUser);
     setAuthError('');
@@ -66,6 +72,7 @@ export default function App() {
     );
   }
 
+  // Renderiza el componente correspondiente según la pestaña activa
   const renderActiveView = () => {
     switch (activeTab) {
       case 'dashboard':

@@ -1,3 +1,5 @@
+// Componente Dashboard
+// Muestra el resumen general del sistema con estadísticas y alertas
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { 
@@ -7,11 +9,14 @@ import {
 } from 'lucide-react';
 import './Dashboard.css';
 
+// Componente Dashboard: Panel principal de control
+// Muestra estadísticas, citas recientes y alertas del sistema
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Al cargar el componente, obtiene el resumen del dashboard de la API
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
