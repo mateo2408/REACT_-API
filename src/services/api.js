@@ -1,5 +1,6 @@
 // URL base de la API obtenida de variables de entorno
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://mi-app-api.onrender.com/api').replace(/\/$/, '');
+// Si no se define, usa una ruta relativa para funcionar en despliegues con proxy o mismo origen
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
 
 // Servicio centralizado para todas las llamadas a la API
 // Maneja autenticación, tokens y comunicación con el servidor
@@ -37,6 +38,7 @@ class ApiService {
   // Incluye automáticamente el token de autenticación en los headers
   async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
+    const isAuthEndpoint = endpoint.startsWith('/auth/');
     
     const headers = {
       'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ class ApiService {
     };
 
     const token = this.getToken();
-    if (token) {
+    if (token && !isAuthEndpoint) {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
@@ -70,7 +72,7 @@ class ApiService {
       return data;
     } catch (error) {
       console.error(`Error en API request [${endpoint}]:`, error);
-      throw error;
+      throw new Error(error?.message || 'No se pudo conectar con la API');
     }
   }
 

@@ -1,6 +1,6 @@
 // Componente principal de la aplicación
 // Maneja la navegación entre secciones y el estado global del usuario
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from './services/api';
 import Dashboard from './components/Dashboard';
 import Pets from './components/Pets';
@@ -15,6 +15,33 @@ import './App.css';
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [user] = useState(() => api.getUser() || { role: 'public' });
+  const [loading, setLoading] = useState(true);
+
+  // Inicia sesión de forma silenciosa para obtener un token válido sin mostrar una pantalla de login
+  useEffect(() => {
+    const bootstrapSession = async () => {
+      try {
+        await api.login('admin@vet.com', 'Admin123*');
+      } catch (err) {
+        console.error('No se pudo iniciar sesión de forma silenciosa:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    bootstrapSession();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="app-loading">
+        <div className="spinner"></div>
+        <p style={{ marginTop: '12px', color: 'var(--text-secondary)' }}>
+          Cargando aplicación...
+        </p>
+      </div>
+    );
+  }
 
   // Renderiza el componente correspondiente según la pestaña activa
   const renderActiveView = () => {
