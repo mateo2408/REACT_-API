@@ -1,14 +1,18 @@
+// Componente Citas Médicas
+// Muestra calendario y lista de citas veterinarias programadas
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Search, Calendar, Clock, Stethoscope, AlertTriangle, MessageSquare } from 'lucide-react';
 import './ListCommon.css';
 
+// Componente Appointments: Lista y búsqueda de citas médicas
 export default function Appointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Al cargar el componente, obtiene la lista de citas de la API
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -23,6 +27,7 @@ export default function Appointments() {
     fetchAppointments();
   }, []);
 
+  // Filtra las citas según el término de búsqueda ingresado
   const filteredAppointments = appointments.filter((app) => {
     const query = searchQuery.toLowerCase();
     return (

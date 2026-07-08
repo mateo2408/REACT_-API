@@ -1,14 +1,18 @@
+// Componente Clientes/Dueños
+// Muestra lista de propietarios de mascotas con información de contacto
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Search, User, Mail, Phone, MapPin, AlertTriangle } from 'lucide-react';
 import './ListCommon.css';
 
+// Componente Owners: Lista y búsqueda de clientes
 export default function Owners() {
   const [owners, setOwners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Al cargar el componente, obtiene la lista de dueños de la API
   useEffect(() => {
     const fetchOwners = async () => {
       try {
@@ -23,6 +27,7 @@ export default function Owners() {
     fetchOwners();
   }, []);
 
+  // Filtra los dueños según el término de búsqueda ingresado
   const filteredOwners = owners.filter((owner) => {
     const query = searchQuery.toLowerCase();
     return (

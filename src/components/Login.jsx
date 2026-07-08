@@ -1,8 +1,11 @@
+// Componente de Login
+// Pantalla de autenticación del usuario con email y contraseña
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { Mail, Lock, Stethoscope, AlertCircle } from 'lucide-react';
 import './Login.css';
 
+// Componente Login: Formulario de autenticación
 export default function Login({ onLoginSuccess, externalError = '' }) {
   const [email, setEmail] = useState('admin@vet.com');
   const [password, setPassword] = useState('Admin123*');
@@ -15,6 +18,8 @@ export default function Login({ onLoginSuccess, externalError = '' }) {
     }
   }, [externalError]);
 
+  // Maneja el envío del formulario de login
+  // Valida credenciales con la API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

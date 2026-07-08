@@ -1,14 +1,18 @@
+// Componente Mascotas
+// Muestra lista de mascotas registradas con funciones de búsqueda y filtrado
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Search, PawPrint, Phone, FileText, AlertTriangle } from 'lucide-react';
 import './ListCommon.css';
 
+// Componente Pets: Lista y búsqueda de mascotas
 export default function Pets() {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Al cargar el componente, obtiene la lista de mascotas de la API
   useEffect(() => {
     const fetchPets = async () => {
       try {
@@ -23,6 +27,7 @@ export default function Pets() {
     fetchPets();
   }, []);
 
+  // Filtra las mascotas según el término de búsqueda ingresado
   const filteredPets = pets.filter((pet) => {
     const query = searchQuery.toLowerCase();
     return (

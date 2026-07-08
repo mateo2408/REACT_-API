@@ -1,3 +1,5 @@
+// Componente Dashboard
+// Muestra el resumen general del sistema con estadísticas y alertas
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { 
@@ -7,18 +9,39 @@ import {
 } from 'lucide-react';
 import './Dashboard.css';
 
+// Componente Dashboard: Panel principal de control
+// Muestra estadísticas, citas recientes y alertas del sistema
 export default function Dashboard() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const emptyDashboardData = {
+    counts: {},
+    recentAppointments: [],
+    recentPets: [],
+    activeOutbreaks: [],
+    diseasesAtRisk: [],
+    epidemicSummary: '',
+    recommendations: [],
+    activeAlerts: [],
+    inventorySummary: {},
+  };
 
+  const [data, setData] = useState(emptyDashboardData);
+  const [loading, setLoading] = useState(true);
+  const [warning, setWarning] = useState('');
+
+  // Al cargar el componente, obtiene el resumen del dashboard de la API
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const summary = await api.getDashboardSummary();
-        setData(summary);
+        setData(summary || emptyDashboardData);
+        setWarning('');
       } catch (err) {
+ fix/render-access
+        setData(emptyDashboardData);
+        setWarning('No se pudo conectar con la API. Se muestra el panel sin datos en vivo.');
+
         setError(err.message || 'Error al cargar la información del panel de control.');
+ main
       } finally {
         setLoading(false);
       }
@@ -32,16 +55,6 @@ export default function Dashboard() {
       <div className="loading-state">
         <div className="spinner"></div>
         <p>Cargando información del sistema...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="error-state glass">
-        <AlertTriangle className="error-icon" size={48} />
-        <h2>Error de Carga</h2>
-        <p>{error}</p>
       </div>
     );
   }
@@ -60,6 +73,13 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-view animate-fade-in">
+      {warning ? (
+        <div className="error-banner glass" style={{ marginBottom: '16px' }}>
+          <AlertTriangle size={20} />
+          <span>{warning}</span>
+        </div>
+      ) : null}
+
       <div className="dashboard-welcome">
         <h1>Dashboard General</h1>
         <p>Resumen del estado clínico y operativo de la veterinaria.</p>
