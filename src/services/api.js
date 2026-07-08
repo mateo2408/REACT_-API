@@ -63,10 +63,18 @@ class ApiService {
         return null;
       }
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      const responseText = await response.text();
+      const data = responseText && contentType.includes('application/json')
+        ? JSON.parse(responseText)
+        : responseText;
       
       if (!response.ok) {
-        throw new Error(data.message || 'Error en la petición del servidor');
+        if (typeof data === 'string' && data.trim()) {
+          throw new Error(data);
+        }
+
+        throw new Error(data?.message || 'Error en la petición del servidor');
       }
 
       return data;

@@ -1,7 +1,11 @@
+ fix/render-access
 // Componente principal de la aplicación
 // Maneja la navegación entre secciones y el estado global del usuario
 import { useState, useEffect } from 'react';
 import { api } from './services/api';
+
+import { useState } from 'react';
+main
 import Dashboard from './components/Dashboard';
 import Pets from './components/Pets';
 import Owners from './components/Owners';
@@ -14,6 +18,7 @@ import './App.css';
 // La app queda abierta directamente para evitar bloqueos de acceso en el deploy
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
+fix/render-access
   const [user] = useState(() => api.getUser() || { role: 'public' });
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +49,8 @@ export default function App() {
   }
 
   // Renderiza el componente correspondiente según la pestaña activa
+
+ main
   const renderActiveView = () => {
     switch (activeTab) {
       case 'dashboard':

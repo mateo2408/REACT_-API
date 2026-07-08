@@ -36,8 +36,12 @@ export default function Dashboard() {
         setData(summary || emptyDashboardData);
         setWarning('');
       } catch (err) {
+ fix/render-access
         setData(emptyDashboardData);
         setWarning('No se pudo conectar con la API. Se muestra el panel sin datos en vivo.');
+
+        setError(err.message || 'Error al cargar la información del panel de control.');
+ main
       } finally {
         setLoading(false);
       }
